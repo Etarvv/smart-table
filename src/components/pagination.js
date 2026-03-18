@@ -28,7 +28,6 @@ export const initPagination = ({ pages, fromRow, toRow, totalRows }, createPage)
                               break; // переход на последнюю страницу
                   }
             if (page > pageCount) page = 1;
-            page = 1;
             // @todo: #2.4 — получить список видимых страниц и вывести их
             const visiblePages = getPages(page, pageCount, 5); // Получим массив страниц, которые нужно показать, выводим только 5 страниц
             pages.replaceChildren(
@@ -46,7 +45,6 @@ export const initPagination = ({ pages, fromRow, toRow, totalRows }, createPage)
 
             // @todo: #2.2 — посчитать сколько строк нужно пропустить и получить срез данных
             const skip = (page - 1) * rowsPerPage;
-            state.page = page;
             return data.slice(skip, skip + rowsPerPage);
       };
 };
