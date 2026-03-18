@@ -9,6 +9,7 @@ export function initSorting(columns) {
             // @todo: #3.1 — запомнить выбранный режим сортировки
             const currentSortState = action.dataset.value;
             const nextSortState = sortMap[currentSortState];
+            action.dataset.value = nextSortState;
 
             // @todo: #3.2 — сбросить сортировки остальных колонок
         columns.forEach(column => {                                    // Перебираем элементы (в columns у нас массив кнопок)

@@ -1,7 +1,18 @@
 import {createComparison, defaultRules} from "../lib/compare.js";
 
 // @todo: #4.3 — настроить компаратор
-const compare = createComparison(defaultRules);
+const compare = createComparison([
+  ...defaultRules,
+  (row, state) => {
+    if (!state.totalFrom) return true;
+    return Number(row.total) >= Number(state.totalFrom);
+  },
+  (row, state) => {
+    if (!state.totalTo) return true;
+    return Number(row.total) <= Number(state.totalTo);
+  }
+]);
+
 
 export function initFiltering(elements, indexes) {
     // @todo: #4.1 — заполнить выпадающие списки опциями
