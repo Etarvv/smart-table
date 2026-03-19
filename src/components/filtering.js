@@ -18,25 +18,16 @@ export function initFiltering(elements, indexes) {
 
       return (data, state, action) => {
             // @todo: #4.2 — обработать очистку поля
-            if (action && action.name === "clear") {
-                  const fieldToClear = action.value;
-                  if (elements[fieldToClear]) {
-                        elements[fieldToClear].value = '';
-                        cstate[fieldToClear] = '';
-                  }
-            }
+      if (action?.name === "clear") {
+      action.parentElement.querySelector("input").value = "";
+      state[action.dataset.field] = "";
+    }
 
             // @todo: #4.5 — отфильтровать данные используя компаратор
-            return data.filter((row) => {
-                  const filterState = { ...state };
-                  if (state.totalFrom || state.totalTo) {
-                        filterState.total = [
-                              state.totalFrom ? parseFloat(state.totalFrom) : undefined,
-                              state.totalTo ? parseFloat(state.totalTo) : undefined,
-                        ];
-                  }
-
-                  return compare(row, filterState);
-            });
-      };
+      const stateForCompare = {
+      ...state,
+      total: [state.totalFrom, state.totalTo],
+    };
+    return data.filter((row) => compare(row, stateForCompare));
+  };
 }
