@@ -15,9 +15,10 @@ import { initSearching } from "./components/searching.js";
 
 const { data, ...indexes } = initData(sourceData);
 
-/**
- * @returns {Object}
- */
+
+let appState = {};
+
+
 function collectState() {
   const state = processFormData(new FormData(sampleTable.container));
 
@@ -25,25 +26,26 @@ function collectState() {
     ...state,
     rowsPerPage: parseInt(state.rowsPerPage),
     page: parseInt(state.page ?? 1),
-
-    sortField: state.sortField || null,
-    sortOrder: state.sortOrder || null,
   };
 }
 
-/**
- * Перерисовка состояния таблицы при любых изменениях
- * @param {HTMLButtonElement?} action
- */
+
 function render(action) {
-  const state = collectState();
+  const formState = collectState();
+
+  
+  appState = {
+    ...appState,
+    ...formState,
+  };
+
   let result = [...data];
 
-
-  result = applyFiltering(result, state, action);
-  result = applySearching(result, state, action);
-  result = applySorting(result, state, action);
-  result = applyPagination(result, state, action);
+  
+  result = applyFiltering(result, appState, action);
+  result = applySearching(result, appState, action);
+  result = applySorting(result, appState, action);
+  result = applyPagination(result, appState, action);
 
   sampleTable.render(result);
 }
@@ -86,5 +88,6 @@ const applyPagination = initPagination(
 
 const appRoot = document.querySelector("#app");
 appRoot.appendChild(sampleTable.container);
+
 
 render();
